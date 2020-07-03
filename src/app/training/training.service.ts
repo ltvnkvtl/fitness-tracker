@@ -42,7 +42,7 @@ export class TrainingService {
   }
 
   completeExercise() {
-    this.completedExercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       date: new Date(),
       state: 'completed'
@@ -52,7 +52,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    this.completedExercises.push({
+    this.addDataToDatabase({
       ...this.runningExercise,
       duration: this.runningExercise.duration * (progress / 100),
       calories: this.runningExercise.calories * (progress / 100),
@@ -69,5 +69,9 @@ export class TrainingService {
 
   getCompletedExercises() {
     return this.completedExercises.slice();
+  }
+
+  private addDataToDatabase(exercise: Exercise) {
+    this.db.collection('finishedExercises').add(exercise);
   }
 }
