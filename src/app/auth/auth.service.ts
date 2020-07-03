@@ -19,39 +19,35 @@ export class AuthService {
   ) {
   }
 
+  initAuthListener() {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.authChange.next(true);
+        this.router.navigate(['/training']);
+      } else {
+        this.trainingService.cancelSubscriptions();
+        this.authChange.next(false);
+        this.router.navigate(['/login']);
+        this.isAuthenticated = false;
+      }
+    });
+  }
+
   registerUser(authData: AuthData) {
-    this.afAuth.createUserWithEmailAndPassword(authData.email, authData.password)
-      .then(result => {
-        this.authSuccessfully();
-      })
-      .catch(error => console.log(error));
+    this.afAuth.createUserWithEmailAndPassword(authData.email, authData.password);
 
   }
 
   login(authData: AuthData) {
-    this.afAuth.signInWithEmailAndPassword(authData.email, authData.password)
-      .then(result => {
-        console.log(result);
-        this.authSuccessfully();
-      })
-      .catch(error => console.log(error));;
+    this.afAuth.signInWithEmailAndPassword(authData.email, authData.password);
   }
 
   logout() {
-    this.trainingService.cancelSubscriptions();
     this.afAuth.signOut();
-    this.authChange.next(false);
-    this.router.navigate(['/login']);
-    this.isAuthenticated = false;
   }
 
   isAuth() {
     return this.isAuthenticated;
-  }
-
-  private authSuccessfully() {
-    this.isAuthenticated = true;
-    this.authChange.next(true);
-    this.router.navigate(['/training']);
   }
 }
