@@ -6,7 +6,7 @@ import {MaterialModule} from './material.module';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {AngularFireModule} from '@angular/fire';
 import {AuthModule} from './auth/auth.module';
-import {TrainingModule} from './training/training.module';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AuthService} from './auth/auth.service';
 import {TrainingService} from './training/training.service';
 import {UiService} from './shared/ui.service';
@@ -31,8 +31,8 @@ import {environment} from '../environments/environment';
     MaterialModule,
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
-    TrainingModule,
-    AuthModule
+    AuthModule,
+    AngularFirestoreModule
   ],
   providers: [AuthService, TrainingService, UiService],
   bootstrap: [AppComponent]
